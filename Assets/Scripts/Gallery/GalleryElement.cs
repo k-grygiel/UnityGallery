@@ -17,7 +17,7 @@ namespace Gallery
             thumbnail.texture = imageContent.Texture;
             aspectRatioFitter.aspectRatio = (float)imageContent.Texture.width / imageContent.Texture.height;
             fileInfo.text = $"{imageContent.FileName} {Environment.NewLine} " +
-                $"{imageContent.TimeSinceCreation.Days}/{imageContent.TimeSinceCreation.Hours}";
+                $"{imageContent.TimeSinceCreation.Days} Days/{imageContent.TimeSinceCreation.Hours} Hours";
         }
     }
 }

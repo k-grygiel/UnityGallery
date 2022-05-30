@@ -1,11 +1,9 @@
 using Image;
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Pool;
-using System;
-using System.IO;
-using System.Collections.Generic;
 
 namespace Gallery
 {
@@ -24,20 +22,28 @@ namespace Gallery
 
         public void LoadGalleryFromPath()
         {
+            StopAllCoroutines();
             ClearGallery();
+
             string galleryPath = SearchSettings.path;
             var files = ImageFinder.GetFiles(galleryPath, SearchSettings.extension, SearchSettings.recursiveSearch);
 
             if (files is null)
                 return;
-            
+
+            StartCoroutine(LoadGallery(files));
+        }
+
+        private IEnumerator LoadGallery(FileInfo[] files)
+        {
             for (int i = 0; i < files.Length; i++)
             {
-                if(!ImageLoader.TryLoadImageFromPath(files[i].FullName, out Texture2D texture))
+                if (!ImageLoader.TryLoadImageFromPath(files[i].FullName, out Texture2D texture))
                     continue;
 
                 ImageContent imageContent = new ImageContent(texture, files[i]);
                 GetGalleryElement(imageContent);
+                yield return null;
             }
         }
 
